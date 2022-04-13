@@ -1,20 +1,18 @@
-import { Card, Form, Button, Row } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
 	password: yup.string().required(),
 	email: yup.string().required().email(),
-	name: yup.string().required(),
 });
 
-const RegistrationForm = () => {
+const LoginForm = () => {
 	return (
 		<Formik
 			validationSchema={schema}
 			onSubmit={(val) => console.group(val)}
 			initialValues={{
-				name: '',
 				email: '',
 				password: '',
 			}}
@@ -28,32 +26,8 @@ const RegistrationForm = () => {
 				isValid,
 				errors,
 			}) => (
-				<Form
-					noValidate
-					onSubmit={handleSubmit}
-					className="border  rounded p-3 mx-auto mt-5 shadow p-3"
-					style={{
-						width: '550px',
-						maxWidth: '100%',
-						borderColor: 'var(--bs-gray-300)',
-					}}
-				>
-					<h2 className="mb-3 text-center">Create account</h2>
-					<Form.Group className="mb-3" >
-						<Form.Label htmlFor="name">Name:</Form.Label>
-						<Form.Control
-							name="name"
-							id="name"
-							type="text"
-							placeholder="Enter your name"
-							value={values.name}
-							onChange={handleChange}
-							isValid={touched.name && !errors.name}
-							isInvalid={touched.name &&!!errors.name}
-							onBlur={handleBlur}
-						/>
-					</Form.Group>
-					<Form.Group className="mb-3" >
+				<Form noValidate onSubmit={handleSubmit}>
+					<Form.Group className="mb-3">
 						<Form.Label htmlFor="email">Email:</Form.Label>
 						<Form.Control
 							name="email"
@@ -63,7 +37,7 @@ const RegistrationForm = () => {
 							value={values.email}
 							onChange={handleChange}
 							isValid={touched.email && !errors.email}
-							isInvalid={touched.email &&!!errors.email}
+							isInvalid={touched.email && !!errors.email}
 							onBlur={handleBlur}
 						/>
 					</Form.Group>
@@ -77,19 +51,11 @@ const RegistrationForm = () => {
 							value={values.password}
 							onChange={handleChange}
 							isValid={touched.password && !errors.password}
-							isInvalid={touched.password &&!!errors.password}
+							isInvalid={touched.password && !!errors.password}
 							onBlur={handleBlur}
 						/>
 					</Form.Group>
-					<div className="mt-5 text-end">
-						<Button
-							className=""
-							variant="outline-primary"
-							type="reset"
-							style={{ marginRight: '5px' }}
-						>
-							Clear
-						</Button>
+					<div className=" text-center">
 						<Button type="submit">Confirm</Button>
 					</div>
 				</Form>
@@ -97,4 +63,5 @@ const RegistrationForm = () => {
 		</Formik>
 	);
 };
-export default RegistrationForm;
+
+export default LoginForm;
