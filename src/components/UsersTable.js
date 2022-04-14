@@ -1,37 +1,13 @@
 import { useState } from 'react';
+import { useContext } from 'react';
 import { Table } from 'react-bootstrap';
-const DUMMY_USERS = [
-	{
-		id: 1,
-		name: 'JohnD',
-		email: 'john@mail.com',
-		registered: '22-03-2022',
-		lastLogin: '12-04-2022',
-		status: 'active',
-	},
-	{
-		id: 2,
-		name: 'JaneD',
-		email: 'jane@mail.com',
-		registered: '15-03-2022',
-		lastLogin: '10-04-2022',
-		status: 'blocked',
-	},
-
-	{
-		id: 3,
-		name: 'user100',
-		email: 'user@mail.com',
-		registered: '22-01-2022',
-		lastLogin: '12-02-2022',
-		status: 'active',
-	},
-];
+import AuthContext from '../store/AuthContext';
 
 const UsersTable = () => {
+	const context = useContext(AuthContext);
 	const [selectAllCheckedState, setSelectAllCheckedState] = useState(false);
 	const [checkedState, setCheckedState] = useState(
-		DUMMY_USERS.map((user) => {
+		context.users.map((user) => {
 			return { id: user.id, checked: false };
 		})
 	);
@@ -56,7 +32,14 @@ const UsersTable = () => {
 	};
 
 	return (
-		<Table className="mt-4 shadow" striped bordered hover size="sm" responsive="sm">
+		<Table
+			className="mt-4 shadow"
+			striped
+			bordered
+			hover
+			size="sm"
+			responsive="sm"
+		>
 			<thead>
 				<tr>
 					<th>
@@ -77,7 +60,7 @@ const UsersTable = () => {
 				</tr>
 			</thead>
 			<tbody>
-				{DUMMY_USERS.map((user, index) => {
+				{context.users.map((user, index) => {
 					return (
 						<tr key={user.id}>
 							<td>

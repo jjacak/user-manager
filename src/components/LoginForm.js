@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import AuthContext from '../store/AuthContext';
 
 const schema = yup.object().shape({
 	password: yup.string().required(),
@@ -8,10 +10,11 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+	const context = useContext(AuthContext);
 	return (
 		<Formik
 			validationSchema={schema}
-			onSubmit={(val) => console.group(val)}
+			onSubmit={() => context.logIn()}
 			initialValues={{
 				email: '',
 				password: '',

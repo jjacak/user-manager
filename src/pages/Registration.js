@@ -1,6 +1,8 @@
-import { Card, Form, Button, Row } from 'react-bootstrap';
+import { Form, Button, Row } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useHistory } from 'react-router-dom';
+
 
 const schema = yup.object().shape({
 	password: yup.string().required(),
@@ -9,10 +11,14 @@ const schema = yup.object().shape({
 });
 
 const RegistrationForm = () => {
+	const history = useHistory();
 	return (
 		<Formik
 			validationSchema={schema}
-			onSubmit={(val) => console.group(val)}
+			onSubmit={(val) => {
+				console.group(val);
+				history.push('/');//redirect to homepage after submitting
+			}}
 			initialValues={{
 				name: '',
 				email: '',
@@ -39,7 +45,7 @@ const RegistrationForm = () => {
 					}}
 				>
 					<h2 className="mb-3 text-center">Create account</h2>
-					<Form.Group className="mb-3" >
+					<Form.Group className="mb-3">
 						<Form.Label htmlFor="name">Name:</Form.Label>
 						<Form.Control
 							name="name"
@@ -49,11 +55,11 @@ const RegistrationForm = () => {
 							value={values.name}
 							onChange={handleChange}
 							isValid={touched.name && !errors.name}
-							isInvalid={touched.name &&!!errors.name}
+							isInvalid={touched.name && !!errors.name}
 							onBlur={handleBlur}
 						/>
 					</Form.Group>
-					<Form.Group className="mb-3" >
+					<Form.Group className="mb-3">
 						<Form.Label htmlFor="email">Email:</Form.Label>
 						<Form.Control
 							name="email"
@@ -63,7 +69,7 @@ const RegistrationForm = () => {
 							value={values.email}
 							onChange={handleChange}
 							isValid={touched.email && !errors.email}
-							isInvalid={touched.email &&!!errors.email}
+							isInvalid={touched.email && !!errors.email}
 							onBlur={handleBlur}
 						/>
 					</Form.Group>
@@ -77,7 +83,7 @@ const RegistrationForm = () => {
 							value={values.password}
 							onChange={handleChange}
 							isValid={touched.password && !errors.password}
-							isInvalid={touched.password &&!!errors.password}
+							isInvalid={touched.password && !!errors.password}
 							onBlur={handleBlur}
 						/>
 					</Form.Group>
