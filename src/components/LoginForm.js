@@ -1,12 +1,15 @@
 import { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import AuthContext from '../store/AuthContext';
 
 const schema = yup.object().shape({
-	password: yup.string().required(),
-	email: yup.string().required().email(),
+	password: yup.string().required('This field is required'),
+	email: yup
+		.string()
+		.required('This field is required')
+		.email('Invalid email format'),
 });
 
 const LoginForm = () => {
@@ -43,6 +46,7 @@ const LoginForm = () => {
 							isInvalid={touched.email && !!errors.email}
 							onBlur={handleBlur}
 						/>
+						<ErrorMessage name="email" />
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label htmlFor="password">Password:</Form.Label>
@@ -57,6 +61,7 @@ const LoginForm = () => {
 							isInvalid={touched.password && !!errors.password}
 							onBlur={handleBlur}
 						/>
+						<ErrorMessage name="password" />
 					</Form.Group>
 					<div className=" text-center">
 						<Button type="submit">Confirm</Button>

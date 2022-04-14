@@ -1,13 +1,13 @@
 import { Form, Button, Row } from 'react-bootstrap';
-import { Formik } from 'formik';
+import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
 
 
 const schema = yup.object().shape({
-	password: yup.string().required(),
-	email: yup.string().required().email(),
-	name: yup.string().required(),
+	password: yup.string().required('This field is required.'),
+	email: yup.string().required('This field is required.').email('Invalid email format.'),
+	name: yup.string().required('This field is required.'),
 });
 
 const RegistrationForm = () => {
@@ -58,6 +58,7 @@ const RegistrationForm = () => {
 							isInvalid={touched.name && !!errors.name}
 							onBlur={handleBlur}
 						/>
+						<ErrorMessage name="name" />
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label htmlFor="email">Email:</Form.Label>
@@ -72,6 +73,7 @@ const RegistrationForm = () => {
 							isInvalid={touched.email && !!errors.email}
 							onBlur={handleBlur}
 						/>
+						<ErrorMessage name="email" />
 					</Form.Group>
 					<Form.Group className="mb-3">
 						<Form.Label htmlFor="password">Password:</Form.Label>
@@ -86,6 +88,7 @@ const RegistrationForm = () => {
 							isInvalid={touched.password && !!errors.password}
 							onBlur={handleBlur}
 						/>
+						<ErrorMessage name="password" />
 					</Form.Group>
 					<div className="mt-5 text-end">
 						<Button
