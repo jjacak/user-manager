@@ -3,20 +3,22 @@ import { useContext } from 'react';
 import { Table } from 'react-bootstrap';
 import AuthContext from '../store/AuthContext';
 
-const UsersTable = () => {
+const UsersTable = (props) => {
 	const context = useContext(AuthContext);
 	const [selectAllCheckedState, setSelectAllCheckedState] = useState(false);
 	const [checkedState, setCheckedState] = useState(
-		context.users.map((user) => {
+		props.users.map((user) => {
 			return { id: user.id, checked: false };
 		})
 	);
+	const checked = checkedState.filter((u) => u.checked === true);
+	props.getSelectedUsers(checkedState.filter((u) => u.checked === true));
 
 	const checkBoxHandler = (id) => {
-		const updatedIndex = checkedState.findIndex((el) => el.id === Number(id));
+		const updatedIndex = checkedState.findIndex((el) => el.id === id);
 		const updatedCheckedState = [...checkedState];
 		updatedCheckedState[updatedIndex] = {
-			id: Number(id),
+			id: id,
 			checked: !checkedState[updatedIndex].checked,
 		};
 		setCheckedState(() => updatedCheckedState);
@@ -60,7 +62,7 @@ const UsersTable = () => {
 				</tr>
 			</thead>
 			<tbody>
-				{context.users.map((user, index) => {
+				{props.users.map((user, index) => {
 					return (
 						<tr key={user.id}>
 							<td>

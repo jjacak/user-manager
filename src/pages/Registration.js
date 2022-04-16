@@ -2,22 +2,52 @@ import { Form, Button, Row } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
-
+import useHttp from '../hooks/use-http';
 
 const schema = yup.object().shape({
 	password: yup.string().required('This field is required.'),
-	email: yup.string().required('This field is required.').email('Invalid email format.'),
+	email: yup
+		.string()
+		.required('This field is required.')
+		.email('Invalid email format.'),
 	name: yup.string().required('This field is required.'),
 });
 
 const RegistrationForm = () => {
+	const { isLoading, error, sendRequest } = useHttp();
 	const history = useHistory();
 	return (
 		<Formik
 			validationSchema={schema}
 			onSubmit={(val) => {
-				console.group(val);
-				history.push('/');//redirect to homepage after submitting
+				const registrationDate = new Date().toISOString().substring(0, 10);
+				const user = { ...val, registered: registrationDate, status:'active' };
+				const getResponse = (data) => {
+					if(!error){
+						history.push('/');
+					}
+			
+				};
+				sendRequest(
+					{
+						url: 'http://localhost:5500/api/register',
+						method: 'POST',
+						body: user,
+						headers: { 'Content-Type': 'application/json' },
+					},
+					getResponse
+				);
+				// const response = await fetch('http://localhost:5500/api/register', {
+				// 	method: 'POST',
+				// 	headers: { 'Content-Type': 'application/json' },
+				// 	body: JSON.stringify(user),
+				// });
+				// const data = await response.json();
+				// if (data.status === 'ok') {
+				// 	history.push('/');
+				// } else {
+				// 	alert(data.error);
+				// }
 			}}
 			initialValues={{
 				name: '',
@@ -101,6 +131,7 @@ const RegistrationForm = () => {
 						</Button>
 						<Button type="submit">Confirm</Button>
 					</div>
+					{error&&<p className='text-danger text-center mt-3'>{error}</p>}
 				</Form>
 			)}
 		</Formik>
