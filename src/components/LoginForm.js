@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import AuthContext from '../store/AuthContext';
 import { isExpired, decodeToken } from 'react-jwt';
 import useHttp from '../hooks/use-http';
+import { useHistory } from 'react-router-dom';
 
 const schema = yup.object().shape({
 	password: yup.string().required('This field is required'),
@@ -15,18 +14,17 @@ const schema = yup.object().shape({
 });
 
 const LoginForm = () => {
+	const history = useHistory();
 	const { isLoading, error, sendRequest } = useHttp();
-	const context = useContext(AuthContext);
+
 	return (
 		<Formik
 			validationSchema={schema}
 			onSubmit={(val) => {
 				const getResponse = (data) => {
-					console.log(data);
 					if (data.user) {
 						localStorage.setItem('token', data.user);
-						const decodedToken = decodeToken(data.user);
-						context.logIn(decodedToken);
+						history.push('/dashboard');
 					}
 				};
 				sendRequest(

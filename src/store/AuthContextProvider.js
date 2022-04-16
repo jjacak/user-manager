@@ -8,7 +8,7 @@ const authReducer = (state, action) => {
 		return { ...state, isLoggedIn: true, user: action.user };
 	}
 	if (action.type === 'LOG_OUT') {
-		return { ...state, isLoggedIn: false };
+		return { ...state, isLoggedIn: false, user: null };
 	} else {
 		return { ...state };
 	}
@@ -25,6 +25,9 @@ const AuthContextProvider = (props) => {
 	const history = useHistory();
 
 	const logIn = (user) => {
+		if (!window.localStorage.getItem('token')) {
+			return;
+		}
 		dispatchAuth({ type: 'LOG_IN', user });
 	};
 	const logOut = () => {
