@@ -1,7 +1,7 @@
 import React from 'react';
 import Navigation from '../components/Navigation';
 import { Container } from 'react-bootstrap';
-import { isExpired, decodeToken } from 'react-jwt';
+import { decodeToken } from 'react-jwt';
 
 const Dashboard = () => {
 	const token = window.localStorage.getItem('token');

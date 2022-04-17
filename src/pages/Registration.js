@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Form, Button, Row } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Navigation from '../components/Navigation';
 import * as yup from 'yup';
-import { useHistory, Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import useHttp from '../hooks/use-http';
+import {decodeToken } from 'react-jwt';
 
 const schema = yup.object().shape({
 	password: yup.string().required('This field is required.'),
@@ -19,6 +20,13 @@ const RegistrationForm = () => {
 	const { isLoading, error, sendRequest } = useHttp();
 	const [didRegister, setDidRegister] = useState(false);
 	const history = useHistory();
+
+	const token = window.localStorage.getItem('token');
+	const decodedToken = decodeToken(token);
+
+	if (decodedToken) {
+		history.push('/');
+	}
 
 	return (
 		<React.Fragment>

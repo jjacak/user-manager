@@ -33,7 +33,7 @@ const AuthContextProvider = (props) => {
 	const logOut = () => {
 		dispatchAuth({ type: 'LOG_OUT' });
 		window.localStorage.removeItem('token');
-		history.push('/');
+		history.push('/login');
 	};
 
 	const authContext = {

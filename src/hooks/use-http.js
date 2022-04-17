@@ -7,15 +7,17 @@ const useHttp = () => {
 	const sendRequest = useCallback(async (requestConfig, applyData) => {
 		setIsLoading(true);
 		setError(null);
+	
 
 		try {
 			const response = await fetch(requestConfig.url, {
 				method: requestConfig.method ? requestConfig.method : 'GET',
 				body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
 				headers: requestConfig.headers ? requestConfig.headers : {},
-				signal: requestConfig.signal ? requestConfig.signal : null,
+				signal: requestConfig.abortControler
+					? requestConfig.abortControler.signal
+					: null,
 			});
-
 			if (!response.ok) {
 				throw new Error('Request failed!');
 			}
@@ -27,7 +29,10 @@ const useHttp = () => {
 
 			applyData(data);
 		} catch (err) {
-			if (!requestConfig.signal ||!requestConfig.signal.aborted) {
+			if (
+				!requestConfig.abortController ||
+				!requestConfig.abortController.signal.aborted
+			) {
 				setError(err.message || 'Something went wrong!');
 			}
 		}
