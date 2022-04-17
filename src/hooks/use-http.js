@@ -13,6 +13,7 @@ const useHttp = () => {
 				method: requestConfig.method ? requestConfig.method : 'GET',
 				body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
 				headers: requestConfig.headers ? requestConfig.headers : {},
+				signal: requestConfig.signal ? requestConfig.signal : null,
 			});
 
 			if (!response.ok) {
@@ -26,7 +27,9 @@ const useHttp = () => {
 
 			applyData(data);
 		} catch (err) {
-			setError(err.message || 'Something went wrong!');
+			if (!requestConfig.signal ||!requestConfig.signal.aborted) {
+				setError(err.message || 'Something went wrong!');
+			}
 		}
 		setIsLoading(false);
 	}, []);

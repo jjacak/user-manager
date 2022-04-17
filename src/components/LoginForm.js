@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
@@ -16,6 +17,11 @@ const schema = yup.object().shape({
 const LoginForm = () => {
 	const history = useHistory();
 	const { isLoading, error, sendRequest } = useHttp();
+    const abortController = new AbortController();
+
+	useEffect(() => {
+		return () => abortController.abort();
+	}, []);
 
 	return (
 		<Formik
@@ -24,7 +30,7 @@ const LoginForm = () => {
 				const getResponse = (data) => {
 					if (data.user) {
 						localStorage.setItem('token', data.user);
-						history.push('/dashboard');
+						history.push('/');
 					}
 				};
 				sendRequest(
@@ -33,6 +39,7 @@ const LoginForm = () => {
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
 						body: val,
+						signal: abortController.signal
 					},
 					getResponse
 				);
@@ -83,14 +90,10 @@ const LoginForm = () => {
 						<ErrorMessage name="password" />
 					</Form.Group>
 					<div className=" text-center">
-						<Button type="submit">Confirm</Button>
+						<Button type="submit">{isLoading ? 'Sending' : 'Confirm'}</Button>
 					</div>
 
-					{error && (
-						<p className="text-danger text-center mt-3">
-							Invalid login or password!
-						</p>
-					)}
+					{error && <p className="text-danger text-center mt-3">{error}</p>}
 				</Form>
 			)}
 		</Formik>

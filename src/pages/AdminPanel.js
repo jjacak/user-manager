@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import UsersTable from '../components/UsersTable';
 import NotAuthorized from './NotAuthorized';
@@ -22,36 +22,45 @@ const AdminPanel = () => {
 		}
 		const getResponse = (data) => {
 			setUsers(data.users);
-			const decodedToken = decodeToken(token);
-			const currentUserIndex = data.users.findIndex(
-				(u) => u.email === decodedToken.email
-			);
-			if (currentUserIndex === -1) {
-				alert('Sorry, your account has been deleted.');
-				window.localStorage.removeItem('token');
-			}
+			// const decodedToken = decodeToken(token);
+			// const currentUserIndex = data.users.findIndex(
+			// 	(u) => u.email === decodedToken.email
+			// );
+			// if (currentUserIndex === -1) {
+			// 	alert('Sorry, your account has been deleted.');
+			// 	window.localStorage.removeItem('token');
+			// }
+			// if (data.users[currentUserIndex].status === 'blocked') {
+			// 	alert('Sorry, your account has been blocked.');
+			// 	window.localStorage.removeItem('token');
+			// }
 		};
 		sendAction(
 			{
-				url: `http://localhost:5500/api/${action}`,
+				url: `http://localhost:5500/api/updateusers`,
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: { users },
+				headers: { 'Content-Type': 'application/json', 'x-access-token': localStorage.getItem('token') },
+				body: { users, action },
 			},
 			getResponse
 		);
 	};
 	useEffect(() => {
+		const abortController = new AbortController();
 		const displayUsers = (data) => {
 			setUsers(data.users);
 		};
 		fetchUsers(
 			{
 				url: 'http://localhost:5500/userlist',
-				headers: { 'Content-Type': 'application/json' },
+				headers: { 'Content-Type': 'application/json','x-access-token': localStorage.getItem('token') },
+				signal: abortController.signal,
 			},
 			displayUsers
 		);
+		return () => {
+			abortController.abort();
+		};
 	}, [fetchUsers]);
 
 	return (

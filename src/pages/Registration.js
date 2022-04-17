@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Row } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import Navigation from '../components/Navigation';
 import * as yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import useHttp from '../hooks/use-http';
 
 const schema = yup.object().shape({
@@ -17,14 +17,15 @@ const schema = yup.object().shape({
 
 const RegistrationForm = () => {
 	const { isLoading, error, sendRequest } = useHttp();
+	const [didRegister, setDidRegister] = useState(false);
 	const history = useHistory();
-	
+
 	return (
 		<React.Fragment>
 			<Navigation />
 			<Formik
 				validationSchema={schema}
-				onSubmit={(val) => {
+				onSubmit={(val, { resetForm }) => {
 					const registrationDate = new Date().toISOString().substring(0, 10);
 					const user = {
 						...val,
@@ -33,7 +34,8 @@ const RegistrationForm = () => {
 					};
 					const getResponse = (data) => {
 						if (!error) {
-							history.push('/');
+							setDidRegister(true);
+							resetForm();
 						}
 					};
 					sendRequest(
@@ -126,9 +128,20 @@ const RegistrationForm = () => {
 							>
 								Clear
 							</Button>
-							<Button type="submit">Confirm</Button>
+							<Button type="submit">
+								{isLoading ? 'Sending...' : ' Confirm'}
+							</Button>
 						</div>
 						{error && <p className="text-danger text-center mt-3">{error}</p>}
+						{didRegister && (
+							<p>
+								Registration was successful.
+								<Link to="/login" style={{ textDecoration: 'none' }}>
+									{' '}
+									Log in here.{' '}
+								</Link>
+							</p>
+						)}
 					</Form>
 				)}
 			</Formik>

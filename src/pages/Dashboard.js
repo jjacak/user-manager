@@ -10,8 +10,9 @@ const Dashboard = () => {
 		<React.Fragment>
 			<Navigation />
 			<Container>
-				{token && <h2 className="mt-4">Welcome back, {decodedToken.name}!</h2>}
-				{!token && <h2 className="mt-4">Welcome, guest!</h2>}
+				<h2 className="mt-4">
+					Welcome{decodedToken? ` back, ${decodedToken.name}!` : ', guest.'}
+				</h2>
 			</Container>
 		</React.Fragment>
 	);

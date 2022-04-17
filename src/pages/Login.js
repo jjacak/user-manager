@@ -12,8 +12,7 @@ const Login = () => {
 		<React.Fragment>
 			<Navigation />
 			<Container>
-				{token && <h2 className="mt-4">Welcome back, {decodedToken.name}!</h2>}
-				{!token && (
+				{!decodedToken && (
 					<Card
 						className=" mx-auto mt-5 shadow"
 						style={{
