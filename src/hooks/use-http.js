@@ -14,8 +14,8 @@ const useHttp = () => {
 				method: requestConfig.method ? requestConfig.method : 'GET',
 				body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
 				headers: requestConfig.headers ? requestConfig.headers : {},
-				signal: requestConfig.abortControler
-					? requestConfig.abortControler.signal
+				signal: requestConfig.abortController
+					? requestConfig.abortController.signal
 					: null,
 			});
 			if (!response.ok) {

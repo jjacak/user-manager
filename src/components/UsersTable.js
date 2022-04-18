@@ -11,11 +11,11 @@ const UsersTable = (props) => {
 	);
 
 	const buttonHandler = (e) => {
-		const id = e.target.getAttribute('id');
-		const checked = checkedState
+		const buttonId = e.target.getAttribute('id');
+		const checkedIds = checkedState
 			.filter((u) => u.checked === true)
 			.map((u) => u.id);
-		props.getUserAction(checked, id);
+		props.getUserAction(checkedIds, buttonId);
 	};
 
 	const checkBoxHandler = (id) => {

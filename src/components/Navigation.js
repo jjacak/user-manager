@@ -1,7 +1,7 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { isExpired, decodeToken } from 'react-jwt';
+import { decodeToken } from 'react-jwt';
 
 const Navigation = () => {
 	const history = useHistory();

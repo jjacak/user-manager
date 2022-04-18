@@ -5,7 +5,7 @@ import Navigation from '../components/Navigation';
 import * as yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 import useHttp from '../hooks/use-http';
-import {decodeToken } from 'react-jwt';
+import { decodeToken } from 'react-jwt';
 
 const schema = yup.object().shape({
 	password: yup.string().required('This field is required.'),
@@ -48,7 +48,7 @@ const RegistrationForm = () => {
 					};
 					sendRequest(
 						{
-							url: 'http://localhost:5500/api/register',
+							url: 'https://joanna-jacak-task3.herokuapp.com/api/register',
 							method: 'POST',
 							body: user,
 							headers: { 'Content-Type': 'application/json' },

@@ -34,7 +34,7 @@ const AdminPanel = () => {
 		};
 		sendAction(
 			{
-				url: `http://localhost:5500/api/updateusers`,
+				url: `https://joanna-jacak-task3.herokuapp.com/api/updateusers`,
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -59,12 +59,12 @@ const AdminPanel = () => {
 		};
 		fetchUsers(
 			{
-				url: 'http://localhost:5500/userlist',
+				url: 'https://joanna-jacak-task3.herokuapp.com/userlist',
 				headers: {
 					'Content-Type': 'application/json',
-					'x-access-token':token,
+					'x-access-token': token,
 				},
-				abortControler: abortController,
+				abortController: abortController,
 			},
 			displayUsers
 		);
@@ -77,9 +77,7 @@ const AdminPanel = () => {
 		<React.Fragment>
 			<Navigation />
 			<Container>
-				{users && decodedToken && (
-					<UsersTable users={users} getUserAction={getUserAction} />
-				)}
+				{users && <UsersTable users={users} getUserAction={getUserAction} />}
 			</Container>
 		</React.Fragment>
 	);

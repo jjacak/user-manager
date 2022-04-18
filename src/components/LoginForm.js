@@ -34,11 +34,11 @@ const LoginForm = () => {
 				};
 				sendRequest(
 					{
-						url: 'http://localhost:5500/api/login',
+						url: 'https://joanna-jacak-task3.herokuapp.com/api/login',
 						method: 'POST',
 						headers: { 'Content-Type': 'application/json' },
 						body: val,
-						signal: abortController.signal
+						abortController: abortController,
 					},
 					getResponse
 				);
